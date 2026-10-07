@@ -1,0 +1,24 @@
+<%- include('partials/header') %>
+<div class="container section">
+  <h2>Your orders</h2>
+  <% if (!orders.length) { %>
+    <div class="panel pad">You have not placed an order yet. <a href="/shop">Shop now</a></div>
+  <% } else { %>
+    <div class="panel pad">
+      <table class="table">
+        <thead><tr><th>Order</th><th>Date</th><th>Status</th><th>Total</th></tr></thead>
+        <tbody>
+          <% orders.forEach(o => { %>
+            <tr>
+              <td><a href="/order/<%= o.orderNo %>"><b><%= o.orderNo %></b></a></td>
+              <td><%= new Date(o.createdAt).toLocaleString('en-IN') %></td>
+              <td><%= o.status %></td>
+              <td><%= inr(o.total) %></td>
+            </tr>
+          <% }) %>
+        </tbody>
+      </table>
+    </div>
+  <% } %>
+</div>
+<%- include('partials/footer') %>

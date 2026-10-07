@@ -1,0 +1,19 @@
+<%- include('partials/header') %>
+<div class="container" style="max-width:460px;margin:40px auto">
+  <div class="panel pad">
+    <h2>Sign in</h2>
+    <% if (error) { %><div class="error"><%= error %></div><% } %>
+    <form method="post">
+      <input type="hidden" name="_csrf" value="<%= csrf %>">
+      <input type="hidden" name="next" value="<%= next %>">
+      <label>Email</label>
+      <input class="field" type="email" name="email" required style="margin:8px 0 12px">
+      <label>Password</label>
+      <input class="field" type="password" name="password" required style="margin:8px 0 16px">
+      <button class="btn" type="submit" style="width:100%">Continue</button>
+    </form>
+    <p class="muted">Demo customer: user@kharidonow.com / user123</p>
+    <p>New here? <a href="/register"><b>Create account</b></a></p>
+  </div>
+</div>
+<%- include('partials/footer') %>

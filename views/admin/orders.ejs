@@ -1,0 +1,26 @@
+<%- include('_head') %>
+<h1>Orders</h1>
+<p>
+  <a href="/admin/orders">All</a> ·
+  <% ['Pending','Confirmed','Packed','Shipped','Out for Delivery','Delivered','Cancelled'].forEach(s => { %>
+    <a href="/admin/orders?status=<%= encodeURIComponent(s) %>"><%= s %></a> ·
+  <% }) %>
+</p>
+<div class="panel pad">
+  <table class="table">
+    <thead><tr><th>Order</th><th>Date</th><th>Status</th><th>Payment</th><th>Total</th><th></th></tr></thead>
+    <tbody>
+      <% orders.forEach(o => { %>
+        <tr>
+          <td><%= o.orderNo %></td>
+          <td><%= new Date(o.createdAt).toLocaleString('en-IN') %></td>
+          <td><%= o.status %></td>
+          <td><%= o.paymentMethod %> / <%= o.paymentStatus %></td>
+          <td><%= inr(o.total) %></td>
+          <td><a class="btn small" href="/admin/orders/<%= o.id %>">Edit</a></td>
+        </tr>
+      <% }) %>
+    </tbody>
+  </table>
+</div>
+<%- include('_foot') %>

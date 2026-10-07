@@ -1,0 +1,23 @@
+<%- include('_head') %>
+<h1>Reviews</h1>
+<div class="panel pad">
+  <table class="table">
+    <thead><tr><th>Customer</th><th>Rating</th><th>Comment</th><th></th></tr></thead>
+    <tbody>
+      <% reviews.forEach(r => { %>
+        <tr>
+          <td><%= r.userName %></td>
+          <td><%= r.rating %></td>
+          <td><%= r.comment %></td>
+          <td>
+            <form method="post" action="/admin/reviews/<%= r.id %>/delete">
+              <input type="hidden" name="_csrf" value="<%= csrf %>">
+              <button class="btn danger small" type="submit">Delete</button>
+            </form>
+          </td>
+        </tr>
+      <% }) %>
+    </tbody>
+  </table>
+</div>
+<%- include('_foot') %>

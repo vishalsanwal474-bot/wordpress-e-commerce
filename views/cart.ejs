@@ -1,0 +1,63 @@
+<%- include('partials/header') %>
+<div class="container two-col">
+  <div class="panel pad">
+    <h2>Your cart</h2>
+    <% if (error) { %><div class="error"><%= error %></div><% } %>
+    <% if (notice) { %><div class="notice"><%= notice %></div><% } %>
+    <% if (!totals.lines.length) { %>
+      <p class="muted">Your cart is empty.</p>
+      <a class="btn" href="/shop">Continue shopping</a>
+    <% } else { %>
+      <table class="table">
+        <thead><tr><th>Item</th><th>Qty</th><th>Total</th><th></th></tr></thead>
+        <tbody>
+        <% totals.lines.forEach((line, index) => { %>
+          <tr>
+            <td>
+              <div style="display:flex;gap:10px;align-items:center">
+                <img src="<%= line.product.image %>" alt="">
+                <div>
+                  <b><%= line.product.name %></b>
+                  <div class="muted"><%= line.size %> · <%= line.color %></div>
+                  <div><%= inr(line.price) %></div>
+                </div>
+              </div>
+            </td>
+            <td>
+              <form method="post" action="/cart/update">
+                <input type="hidden" name="_csrf" value="<%= csrf %>">
+                <input type="hidden" name="index" value="<%= index %>">
+                <input class="qty" type="number" name="qty" min="0" value="<%= line.qty %>" onchange="this.form.submit()">
+              </form>
+            </td>
+            <td><b><%= inr(line.lineTotal) %></b></td>
+            <td>
+              <form method="post" action="/cart/remove">
+                <input type="hidden" name="_csrf" value="<%= csrf %>">
+                <input type="hidden" name="index" value="<%= index %>">
+                <button class="btn ghost small" type="submit">Remove</button>
+              </form>
+            </td>
+          </tr>
+        <% }) %>
+        </tbody>
+      </table>
+    <% } %>
+  </div>
+  <aside class="panel pad">
+    <h3>Price summary</h3>
+    <p>Items: <b style="float:right"><%= inr(totals.subtotal) %></b></p>
+    <p>Discount: <b style="float:right"><%= inr(totals.discount) %></b></p>
+    <p>Delivery: <b style="float:right"><%= totals.shipping ? inr(totals.shipping) : 'Free' %></b></p>
+    <hr>
+    <p>Total: <b style="float:right;font-size:20px"><%= inr(totals.total) %></b></p>
+    <form method="post" action="/cart/coupon" style="margin:14px 0">
+      <input type="hidden" name="_csrf" value="<%= csrf %>">
+      <input class="field" name="code" placeholder="Coupon code" value="<%= coupon ? coupon.code : '' %>">
+      <button class="btn ghost small" style="margin-top:8px" type="submit">Apply coupon</button>
+    </form>
+    <p class="muted">Try WELCOME10 or FLAT200</p>
+    <% if (totals.lines.length) { %><a class="btn" style="width:100%" href="/checkout">Place order</a><% } %>
+  </aside>
+</div>
+<%- include('partials/footer') %>

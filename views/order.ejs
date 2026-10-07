@@ -1,0 +1,34 @@
+<%- include('partials/header') %>
+<div class="container two-col">
+  <div class="panel pad">
+    <% if (placed) { %><div class="notice">Order placed. Keep this order number for tracking.</div><% } %>
+    <h2>Order <%= order.orderNo %></h2>
+    <p>Status: <b><%= order.status %></b> · Payment: <%= order.paymentMethod %> (<%= order.paymentStatus %>)</p>
+    <table class="table">
+      <% order.items.forEach(item => { %>
+        <tr>
+          <td><img src="<%= item.image %>" alt=""></td>
+          <td><%= item.name %><div class="muted"><%= item.size %> · <%= item.color %> × <%= item.qty %></div></td>
+          <td><%= inr(item.price * item.qty) %></td>
+        </tr>
+      <% }) %>
+    </table>
+    <p>Ship to: <%= order.address.name %>, <%= order.address.line1 %>, <%= order.address.city %>, <%= order.address.pincode %></p>
+    <p>Total <b><%= inr(order.total) %></b></p>
+    <% if (['Pending', 'Confirmed'].includes(order.status)) { %>
+      <form method="post" action="/order/<%= order.orderNo %>/cancel" onsubmit="return confirm('Cancel this order?')">
+        <input type="hidden" name="_csrf" value="<%= csrf %>">
+        <button class="btn danger" type="submit">Cancel order</button>
+      </form>
+    <% } %>
+  </div>
+  <aside class="panel pad">
+    <h3>Tracking</h3>
+    <ul class="timeline">
+      <% (order.timeline || []).forEach(t => { %>
+        <li><b><%= t.status %></b><div class="muted"><%= new Date(t.at).toLocaleString('en-IN') %><% if (t.note) { %> · <%= t.note %><% } %></div></li>
+      <% }) %>
+    </ul>
+  </aside>
+</div>
+<%- include('partials/footer') %>

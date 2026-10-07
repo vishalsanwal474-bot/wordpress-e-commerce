@@ -1,0 +1,38 @@
+<%- include('_head') %>
+<h1>Categories</h1>
+<div class="two-col">
+  <div class="panel pad">
+    <table class="table">
+      <% categories.forEach(c => { %>
+        <tr>
+          <td><img src="<%= c.image %>" alt=""></td>
+          <td>
+            <form method="post" action="/admin/categories/save">
+              <input type="hidden" name="_csrf" value="<%= csrf %>">
+              <input type="hidden" name="id" value="<%= c.id %>">
+              <input class="field" name="name" value="<%= c.name %>">
+              <input class="field" name="image" value="<%= c.image %>" style="margin-top:6px">
+              <button class="btn small" style="margin-top:6px" type="submit">Update</button>
+            </form>
+          </td>
+          <td>
+            <form method="post" action="/admin/categories/<%= c.id %>/delete" onsubmit="return confirm('Delete category?')">
+              <input type="hidden" name="_csrf" value="<%= csrf %>">
+              <button class="btn danger small" type="submit">Delete</button>
+            </form>
+          </td>
+        </tr>
+      <% }) %>
+    </table>
+  </div>
+  <form class="panel pad" method="post" action="/admin/categories/save">
+    <h3>Add category</h3>
+    <input type="hidden" name="_csrf" value="<%= csrf %>">
+    <label>Name</label>
+    <input class="field" name="name" required>
+    <label>Image URL</label>
+    <input class="field" name="image" style="margin:8px 0">
+    <button class="btn" type="submit">Create</button>
+  </form>
+</div>
+<%- include('_foot') %>

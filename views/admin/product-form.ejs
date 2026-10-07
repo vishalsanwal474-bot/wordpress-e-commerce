@@ -1,0 +1,38 @@
+<%- include('_head') %>
+<h1><%= product ? 'Edit product' : 'New product' %></h1>
+<form class="panel pad" method="post" action="/admin/products/save" enctype="multipart/form-data">
+  <input type="hidden" name="_csrf" value="<%= csrf %>">
+  <% if (product) { %><input type="hidden" name="id" value="<%= product.id %>"><% } %>
+  <div class="form-grid">
+    <div class="full"><label>Name</label><input class="field" name="name" required value="<%= product ? product.name : '' %>"></div>
+    <div><label>SKU</label><input class="field" name="sku" value="<%= product ? product.sku : '' %>"></div>
+    <div><label>Brand</label><input class="field" name="brand" value="<%= product ? product.brand : '' %>"></div>
+    <div><label>Price</label><input class="field" type="number" name="price" required value="<%= product ? product.price : '' %>"></div>
+    <div><label>Compare price</label><input class="field" type="number" name="comparePrice" value="<%= product ? product.comparePrice : '' %>"></div>
+    <div><label>Stock</label><input class="field" type="number" name="stock" value="<%= product ? product.stock : 10 %>"></div>
+    <div>
+      <label>Category</label>
+      <select class="field" name="categoryId">
+        <% categories.forEach(c => { %>
+          <option value="<%= c.id %>" <%= product && product.categoryId === c.id ? 'selected' : '' %>><%= c.name %></option>
+        <% }) %>
+      </select>
+    </div>
+    <div>
+      <label>Gender</label>
+      <select class="field" name="gender">
+        <% ['Men','Women','Kids','Unisex'].forEach(g => { %>
+          <option <%= product && product.gender === g ? 'selected' : '' %>><%= g %></option>
+        <% }) %>
+      </select>
+    </div>
+    <div class="full"><label>Sizes (comma separated)</label><input class="field" name="sizes" value="<%= product ? product.sizes.join(', ') : 'S, M, L, XL' %>"></div>
+    <div class="full"><label>Colors (comma separated)</label><input class="field" name="colors" value="<%= product ? product.colors.join(', ') : 'Black, White' %>"></div>
+    <div class="full"><label>Image URL</label><input class="field" name="image" value="<%= product ? product.image : '' %>"></div>
+    <div class="full"><label>Or upload image</label><input class="field" type="file" name="imageFile" accept="image/*"></div>
+    <div class="full"><label>Description</label><textarea class="field" name="description" style="min-height:120px"><%= product ? product.description : '' %></textarea></div>
+    <div><label><input type="checkbox" name="featured" <%= product && product.featured ? 'checked' : '' %>> Featured</label></div>
+  </div>
+  <button class="btn" style="margin-top:16px" type="submit">Save product</button>
+</form>
+<%- include('_foot') %>

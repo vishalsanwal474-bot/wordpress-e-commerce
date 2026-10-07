@@ -1,0 +1,12 @@
+<%- include('partials/header') %>
+<div class="container section">
+  <h2>Wishlist</h2>
+  <% if (!products.length) { %>
+    <div class="panel pad">Nothing saved yet.</div>
+  <% } else { %>
+    <div class="product-grid">
+      <% products.forEach(p => { %><%- include('partials/product-card', { p }) %><% }) %>
+    </div>
+  <% } %>
+</div>
+<%- include('partials/footer') %>

@@ -1,0 +1,81 @@
+<%- include('partials/header') %>
+<section class="container hero">
+  <div>
+    <p class="muted">Clothing for everyday, work, and celebrations</p>
+    <h1>Buy clothes without the clutter.</h1>
+    <p>Search, compare fits, add to cart, and checkout in a few taps. Men, women, kids, ethnic wear, and extras — all in one simple store.</p>
+    <div style="display:flex;gap:10px;margin-top:18px;flex-wrap:wrap">
+      <a class="btn" href="/shop">Shop all clothing</a>
+      <a class="btn green" href="/shop?category=cat-women">Women's picks</a>
+    </div>
+  </div>
+  <div class="hero-art">
+    <img src="/public/images/logo.png" alt="KharidoNow logo">
+  </div>
+</section>
+
+<section class="container section">
+  <div class="section-head">
+    <div>
+      <h2>Shop by category</h2>
+      <p>Start with what you need</p>
+    </div>
+  </div>
+  <div class="cat-grid">
+    <% categories.forEach(c => { %>
+      <a class="cat-card" href="/shop?category=<%= c.id %>">
+        <img src="<%= c.image %>" alt="<%= c.name %>">
+        <span><%= c.name %></span>
+      </a>
+    <% }) %>
+  </div>
+</section>
+
+<section class="container section">
+  <div class="section-head">
+    <div>
+      <h2>Deals of the day</h2>
+      <p>Marked down from the list price</p>
+    </div>
+    <a href="/shop">See all</a>
+  </div>
+  <div class="product-grid">
+    <% deals.forEach(p => { %><%- include('partials/product-card', { p }) %><% }) %>
+  </div>
+</section>
+
+<section class="container section">
+  <div class="section-head">
+    <div>
+      <h2>Featured styles</h2>
+      <p>Hand-picked for the storefront</p>
+    </div>
+  </div>
+  <div class="product-grid">
+    <% featured.forEach(p => { %><%- include('partials/product-card', { p }) %><% }) %>
+  </div>
+</section>
+
+<section class="container section">
+  <div class="section-head"><div><h2>Men</h2><p>Shirts, trousers, and layers</p></div><a href="/shop?category=cat-men">View men</a></div>
+  <div class="product-grid">
+    <% men.forEach(p => { %><%- include('partials/product-card', { p }) %><% }) %>
+  </div>
+</section>
+
+<section class="container section">
+  <div class="section-head"><div><h2>Women</h2><p>Dresses, denim, and ethnic</p></div><a href="/shop?category=cat-women">View women</a></div>
+  <div class="product-grid">
+    <% women.forEach(p => { %><%- include('partials/product-card', { p }) %><% }) %>
+  </div>
+</section>
+
+<% if (recent && recent.length) { %>
+<section class="container section">
+  <div class="section-head"><div><h2>Recently viewed</h2><p>Pick up where you left off</p></div></div>
+  <div class="product-grid">
+    <% recent.forEach(p => { %><%- include('partials/product-card', { p }) %><% }) %>
+  </div>
+</section>
+<% } %>
+<%- include('partials/footer') %>

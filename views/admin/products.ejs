@@ -1,0 +1,28 @@
+<%- include('_head') %>
+<div style="display:flex;justify-content:space-between;align-items:center">
+  <h1>Products</h1>
+  <a class="btn" href="/admin/products/new">Add product</a>
+</div>
+<div class="panel pad">
+  <table class="table">
+    <thead><tr><th></th><th>Name</th><th>Price</th><th>Stock</th><th></th></tr></thead>
+    <tbody>
+      <% products.forEach(p => { %>
+        <tr>
+          <td><img src="<%= p.image %>" alt=""></td>
+          <td><b><%= p.name %></b><div class="muted"><%= p.sku %></div></td>
+          <td><%= inr(p.price) %></td>
+          <td><%= p.stock %></td>
+          <td>
+            <a class="btn ghost small" href="/admin/products/<%= p.id %>/edit">Edit</a>
+            <form method="post" action="/admin/products/<%= p.id %>/delete" style="display:inline" onsubmit="return confirm('Delete this product?')">
+              <input type="hidden" name="_csrf" value="<%= csrf %>">
+              <button class="btn danger small" type="submit">Delete</button>
+            </form>
+          </td>
+        </tr>
+      <% }) %>
+    </tbody>
+  </table>
+</div>
+<%- include('_foot') %>

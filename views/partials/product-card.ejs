@@ -1,0 +1,17 @@
+<article class="product-card">
+  <a href="/product/<%= p.slug %>">
+    <img src="<%= p.image %>" alt="<%= p.name %>">
+    <div class="meta">
+      <div class="brand-name"><%= p.brand %></div>
+      <div><%= p.name %></div>
+      <div class="stars"><%= '★'.repeat(Math.round(p.ratingAvg || 0)) %> <span class="muted">(<%= p.ratingCount || 0 %>)</span></div>
+      <div class="price">
+        <b><%= inr(p.price) %></b>
+        <% if (p.comparePrice > p.price) { %>
+          <s><%= inr(p.comparePrice) %></s>
+          <span class="off"><%= Math.round((1 - p.price / p.comparePrice) * 100) %>% off</span>
+        <% } %>
+      </div>
+    </div>
+  </a>
+</article>

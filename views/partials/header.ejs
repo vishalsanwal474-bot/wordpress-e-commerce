@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title><%= typeof title !== 'undefined' ? title + ' · ' : '' %>KharidoNow</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/public/css/style.css">
+</head>
+<body>
+  <div class="topbar">
+    <div class="container">
+      <span>Free delivery on orders above ₹499 · Easy 7-day returns</span>
+      <span><a href="/track">Track order</a> &nbsp;·&nbsp; <a href="/admin/login">Admin</a></span>
+    </div>
+  </div>
+  <header class="header">
+    <div class="container">
+      <div class="header-row">
+        <a class="brand" href="/">
+          <img src="/public/images/logo.png" alt="KharidoNow">
+          <span class="brand-text">
+            <strong>Kharido<span>Now</span></strong>
+            <small>Online clothing store</small>
+          </span>
+        </a>
+        <form class="search" action="/shop" method="get" autocomplete="off">
+          <input type="search" name="q" id="searchInput" placeholder="Search shirts, kurtas, sneakers..." value="<%= query.q || '' %>" aria-autocomplete="list">
+          <button type="submit">Search</button>
+          <div class="search-suggest" id="searchSuggest" hidden></div>
+        </form>
+        <div class="header-actions">
+          <button class="menu-toggle" type="button" data-menu>Menu</button>
+          <a class="icon-link" href="<%= user ? '/account' : '/login' %>">
+            <span>Hello<%= user ? ',' : '' %></span>
+            <b><%= user ? user.name.split(' ')[0] : 'Sign in' %></b>
+          </a>
+          <a class="icon-link" href="/wishlist"><span>Saved</span><b>Wishlist</b></a>
+          <a class="cart-pill" href="/cart">Cart (<%= cartCount %>)</a>
+        </div>
+      </div>
+      <nav class="nav">
+        <a href="/shop" class="<%= currentPath === '/shop' && !query.category ? 'active' : '' %>">All</a>
+        <% categories.forEach(c => { %>
+          <a href="/shop?category=<%= c.id %>" class="<%= query.category === c.id ? 'active' : '' %>"><%= c.name %></a>
+        <% }) %>
+        <a href="/shop?sort=price-asc">Budget picks</a>
+        <a href="/orders">My orders</a>
+      </nav>
+    </div>
+  </header>
+  <% if (flash) { %>
+    <div class="container"><div class="<%= flash.type === 'error' ? 'error' : 'notice' %>" style="margin-top:14px"><%= flash.message %></div></div>
+  <% } %>
+  <main>

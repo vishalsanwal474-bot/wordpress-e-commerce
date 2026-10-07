@@ -1,0 +1,43 @@
+<%- include('_head') %>
+<h1>Order <%= order.orderNo %></h1>
+<div class="two-col">
+  <div class="panel pad">
+    <p>Customer address: <%= order.address.name %>, <%= order.address.phone %>, <%= order.address.line1 %>, <%= order.address.city %> <%= order.address.pincode %></p>
+    <table class="table">
+      <% order.items.forEach(item => { %>
+        <tr>
+          <td><img src="<%= item.image %>" alt=""></td>
+          <td><%= item.name %><div class="muted"><%= item.size %> · <%= item.color %> × <%= item.qty %></div></td>
+          <td><%= inr(item.price * item.qty) %></td>
+        </tr>
+      <% }) %>
+    </table>
+    <p>Total <b><%= inr(order.total) %></b></p>
+  </div>
+  <form class="panel pad" method="post" action="/admin/orders/<%= order.id %>/status">
+    <h3>Update status</h3>
+    <input type="hidden" name="_csrf" value="<%= csrf %>">
+    <label>Order status</label>
+    <select class="field" name="status">
+      <% statuses.forEach(s => { %>
+        <option <%= order.status === s ? 'selected' : '' %>><%= s %></option>
+      <% }) %>
+    </select>
+    <label>Payment status</label>
+    <select class="field" name="paymentStatus" style="margin:8px 0">
+      <% ['Pending','Paid','Refunded'].forEach(s => { %>
+        <option <%= order.paymentStatus === s ? 'selected' : '' %>><%= s %></option>
+      <% }) %>
+    </select>
+    <label>Note</label>
+    <input class="field" name="note" placeholder="Optional note">
+    <button class="btn" style="margin-top:12px" type="submit">Save</button>
+    <h4>History</h4>
+    <ul class="timeline">
+      <% (order.timeline || []).forEach(t => { %>
+        <li><%= t.status %> · <%= new Date(t.at).toLocaleString('en-IN') %><% if (t.note) { %> — <%= t.note %><% } %></li>
+      <% }) %>
+    </ul>
+  </form>
+</div>
+<%- include('_foot') %>

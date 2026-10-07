@@ -1,0 +1,20 @@
+<%- include('partials/header') %>
+<div class="container" style="max-width:640px;margin:32px auto">
+  <div class="panel pad">
+    <h2>Track an order</h2>
+    <form method="get">
+      <input class="field" name="orderNo" placeholder="e.g. KN10000001" value="<%= query.orderNo || '' %>">
+      <button class="btn" style="margin-top:10px" type="submit">Track</button>
+    </form>
+    <% if (searched && !order) { %><div class="error" style="margin-top:12px">No order found with that number.</div><% } %>
+    <% if (order) { %>
+      <h3 style="margin-top:20px"><%= order.orderNo %> · <%= order.status %></h3>
+      <ul class="timeline">
+        <% (order.timeline || []).forEach(t => { %>
+          <li><b><%= t.status %></b> — <%= new Date(t.at).toLocaleString('en-IN') %></li>
+        <% }) %>
+      </ul>
+    <% } %>
+  </div>
+</div>
+<%- include('partials/footer') %>

@@ -1,0 +1,42 @@
+<%- include('partials/header') %>
+<div class="container two-col">
+  <div class="panel pad">
+    <h2>Your account</h2>
+    <form method="post" action="/account/profile" style="margin-bottom:22px">
+      <input type="hidden" name="_csrf" value="<%= csrf %>">
+      <div class="form-grid">
+        <div><label>Name</label><input class="field" name="name" required value="<%= userFull.name %>"></div>
+        <div><label>Phone</label><input class="field" name="phone" value="<%= userFull.phone || '' %>"></div>
+        <div class="full"><label>Email</label><input class="field" value="<%= userFull.email %>" disabled></div>
+        <div class="full"><label>New password (optional)</label><input class="field" type="password" name="password" minlength="6" placeholder="Leave blank to keep current"></div>
+      </div>
+      <button class="btn small" style="margin-top:10px" type="submit">Save profile</button>
+    </form>
+    <p><a class="btn ghost small" href="/logout">Sign out</a> <% if (user.role === 'admin') { %><a class="btn small" href="/admin">Open admin</a><% } %></p>
+    <h3>Saved addresses</h3>
+    <% addresses.forEach(a => { %>
+      <p><%= a.name %>, <%= a.line1 %>, <%= a.city %>, <%= a.state %> <%= a.pincode %></p>
+    <% }) %>
+    <form method="post" action="/account/address">
+      <input type="hidden" name="_csrf" value="<%= csrf %>">
+      <div class="form-grid">
+        <div><input class="field" name="name" placeholder="Name" required></div>
+        <div><input class="field" name="phone" placeholder="Phone" required></div>
+        <div class="full"><input class="field" name="line1" placeholder="Address" required></div>
+        <div><input class="field" name="city" placeholder="City" required></div>
+        <div><input class="field" name="state" placeholder="State" required></div>
+        <div><input class="field" name="pincode" placeholder="PIN" required></div>
+      </div>
+      <button class="btn small" style="margin-top:10px" type="submit">Add address</button>
+    </form>
+  </div>
+  <aside class="panel pad">
+    <h3>Recent orders</h3>
+    <% if (!orders.length) { %><p class="muted">No orders yet.</p><% } %>
+    <% orders.slice(0, 6).forEach(o => { %>
+      <p><a href="/order/<%= o.orderNo %>"><b><%= o.orderNo %></b></a> · <%= o.status %> · <%= inr(o.total) %></p>
+    <% }) %>
+    <a href="/orders">View all orders</a>
+  </aside>
+</div>
+<%- include('partials/footer') %>

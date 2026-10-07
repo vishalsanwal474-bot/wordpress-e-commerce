@@ -1,0 +1,60 @@
+<%- include('partials/header') %>
+<div class="container layout">
+  <aside class="panel filters">
+    <h3>Filter</h3>
+    <form method="get" action="/shop">
+      <% if (query.q) { %><input type="hidden" name="q" value="<%= query.q %>"><% } %>
+      <label>Category</label>
+      <select name="category">
+        <option value="">All</option>
+        <% categories.forEach(c => { %>
+          <option value="<%= c.id %>" <%= query.category === c.id ? 'selected' : '' %>><%= c.name %></option>
+        <% }) %>
+      </select>
+      <label>Who</label>
+      <select name="gender">
+        <option value="">Anyone</option>
+        <% ['Men','Women','Kids','Unisex'].forEach(g => { %>
+          <option <%= query.gender === g ? 'selected' : '' %>><%= g %></option>
+        <% }) %>
+      </select>
+      <label>Min price</label>
+      <input type="number" name="min" value="<%= query.min || '' %>" placeholder="0">
+      <label>Max price</label>
+      <input type="number" name="max" value="<%= query.max || '' %>" placeholder="5000">
+      <label>Sort</label>
+      <select name="sort">
+        <option value="">Popular</option>
+        <option value="price-asc" <%= query.sort === 'price-asc' ? 'selected' : '' %>>Price: low to high</option>
+        <option value="price-desc" <%= query.sort === 'price-desc' ? 'selected' : '' %>>Price: high to low</option>
+        <option value="rating" <%= query.sort === 'rating' ? 'selected' : '' %>>Customer rating</option>
+      </select>
+      <button class="btn" style="width:100%;margin-top:14px" type="submit">Apply</button>
+    </form>
+  </aside>
+  <section>
+    <div class="section-head">
+      <div>
+        <h2><%= title %></h2>
+        <p><%= pageData.total %> items · page <%= pageData.page %> of <%= pageData.pages %></p>
+      </div>
+    </div>
+    <% if (!products.length) { %>
+      <div class="panel pad">No matching products. Try clearing a filter.</div>
+    <% } else { %>
+      <div class="product-grid">
+        <% products.forEach(p => { %><%- include('partials/product-card', { p }) %><% }) %>
+      </div>
+      <% if (pageData.pages > 1) { %>
+        <div class="pager">
+          <% for (let i = 1; i <= pageData.pages; i++) {
+            const params = new URLSearchParams({ ...query, page: String(i) });
+          %>
+            <a class="<%= pageData.page === i ? 'active' : '' %>" href="/shop?<%= params.toString() %>"><%= i %></a>
+          <% } %>
+        </div>
+      <% } %>
+    <% } %>
+  </section>
+</div>
+<%- include('partials/footer') %>

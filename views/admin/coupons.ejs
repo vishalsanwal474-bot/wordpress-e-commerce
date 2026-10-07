@@ -1,0 +1,42 @@
+<%- include('_head') %>
+<h1>Coupons</h1>
+<div class="two-col">
+  <div class="panel pad">
+    <table class="table">
+      <thead><tr><th>Code</th><th>Offer</th><th>Min order</th><th>Active</th><th></th></tr></thead>
+      <tbody>
+        <% coupons.forEach(c => { %>
+          <tr>
+            <td><b><%= c.code %></b></td>
+            <td><%= c.type === 'percent' ? c.value + '%' : inr(c.value) %></td>
+            <td><%= inr(c.minOrder) %></td>
+            <td><%= c.active ? 'Yes' : 'No' %></td>
+            <td>
+              <form method="post" action="/admin/coupons/<%= c.id %>/toggle">
+                <input type="hidden" name="_csrf" value="<%= csrf %>">
+                <button class="btn ghost small" type="submit">Toggle</button>
+              </form>
+            </td>
+          </tr>
+        <% }) %>
+      </tbody>
+    </table>
+  </div>
+  <form class="panel pad" method="post" action="/admin/coupons/save">
+    <h3>Create coupon</h3>
+    <input type="hidden" name="_csrf" value="<%= csrf %>">
+    <label>Code</label>
+    <input class="field" name="code" required>
+    <label>Type</label>
+    <select class="field" name="type">
+      <option value="percent">Percent</option>
+      <option value="flat">Flat</option>
+    </select>
+    <label>Value</label>
+    <input class="field" type="number" name="value" required>
+    <label>Min order</label>
+    <input class="field" type="number" name="minOrder" value="0" style="margin-bottom:10px">
+    <button class="btn" type="submit">Add coupon</button>
+  </form>
+</div>
+<%- include('_foot') %>

@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>KharidoNow — Complete Project Documentation</title>
+<style>
+  @page { size: A4; margin: 18mm 16mm; }
+  * { box-sizing: border-box; }
+  body {
+    font-family: "Segoe UI", Calibri, Arial, sans-serif;
+    color: #0f172a;
+    line-height: 1.45;
+    font-size: 11pt;
+    margin: 0;
+  }
+  h1 { font-size: 22pt; margin: 0 0 6px; color: #1e40af; }
+  h2 {
+    font-size: 14pt;
+    color: #1e40af;
+    border-bottom: 2px solid #16a34a;
+    padding-bottom: 4px;
+    margin: 22px 0 10px;
+    page-break-after: avoid;
+  }
+  h3 { font-size: 12pt; margin: 14px 0 6px; color: #0f172a; page-break-after: avoid; }
+  p, li { margin: 4px 0; }
+  ul, ol { margin: 6px 0 10px 18px; padding: 0; }
+  .cover {
+    text-align: center;
+    padding: 48px 20px 30px;
+    border: 2px solid #1e40af;
+    border-radius: 12px;
+    margin-bottom: 24px;
+  }
+  .cover .sub { color: #64748b; font-size: 12pt; }
+  .badge {
+    display: inline-block;
+    background: #16a34a;
+    color: #fff;
+    padding: 4px 12px;
+    border-radius: 999px;
+    font-size: 10pt;
+    font-weight: 700;
+    margin-top: 10px;
+  }
+  .meta { margin-top: 18px; font-size: 10.5pt; color: #334155; }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 8px 0 14px;
+    font-size: 10pt;
+  }
+  th, td {
+    border: 1px solid #cbd5e1;
+    padding: 7px 8px;
+    text-align: left;
+    vertical-align: top;
+  }
+  th { background: #eff6ff; color: #1e3a8a; }
+  code, .path {
+    font-family: Consolas, "Courier New", monospace;
+    background: #f1f5f9;
+    padding: 1px 5px;
+    border-radius: 4px;
+    font-size: 9.5pt;
+  }
+  pre {
+    background: #0f172a;
+    color: #e2e8f0;
+    padding: 12px 14px;
+    border-radius: 8px;
+    font-size: 9.5pt;
+    overflow: hidden;
+    white-space: pre-wrap;
+  }
+  .note {
+    background: #f0fdf4;
+    border-left: 4px solid #16a34a;
+    padding: 10px 12px;
+    margin: 10px 0;
+  }
+  .warn {
+    background: #fff7ed;
+    border-left: 4px solid #f59e0b;
+    padding: 10px 12px;
+    margin: 10px 0;
+  }
+  .toc a { color: #1e40af; text-decoration: none; }
+  .footer-note { color: #64748b; font-size: 9.5pt; margin-top: 24px; }
+  .two { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .card {
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    padding: 10px 12px;
+    background: #f8fafc;
+  }
+</style>
+</head>
+<body>
+
+<div class="cover">
+  <h1>KharidoNow</h1>
+  <div class="sub">Online Clothing E-Commerce Platform</div>
+  <div class="sub">Complete Functional Project Documentation</div>
+  <div class="badge">Version 1.0 · Ready for Local Demo</div>
+  <div class="meta">
+    <div><strong>Project name:</strong> KharidoNow</div>
+    <div><strong>Type:</strong> Dynamic, responsive clothing store with admin panel</div>
+    <div><strong>Local URL:</strong> http://localhost:3000</div>
+    <div><strong>Document date:</strong> 10 September 2026</div>
+  </div>
+</div>
+
+<h2>1. Table of Contents</h2>
+<ol class="toc">
+  <li>Project Overview</li>
+  <li>Technologies Used</li>
+  <li>System Architecture</li>
+  <li>Folder Structure</li>
+  <li>Features — Customer Storefront</li>
+  <li>Features — Admin Panel</li>
+  <li>User Roles &amp; Demo Credentials</li>
+  <li>Routes / API Map</li>
+  <li>Data Model</li>
+  <li>Business Rules</li>
+  <li>UI / UX Design Notes</li>
+  <li>How to Run</li>
+  <li>Testing Checklist</li>
+  <li>Going Live (Production Path)</li>
+  <li>Limitations &amp; Future Scope</li>
+</ol>
+
+<h2>2. Project Overview</h2>
+<p>
+<strong>KharidoNow</strong> is a complete online clothing store inspired by the shopping experience of platforms like Amazon and Flipkart.
+It provides a light, simple, and responsive interface for customers, plus a secure admin panel for managing the catalog, orders, customers, reviews, and coupons.
+</p>
+<p>
+The original request asked for a WordPress e-commerce site. Because PHP/WordPress/MySQL were not available on the development machine,
+the project was implemented as a <strong>Node.js + Express</strong> application that delivers the same functional flows
+(storefront + admin CRUD + order lifecycle) and can be extended into a real production store.
+</p>
+<div class="note">
+<strong>Brand:</strong> Site name is <strong>KharidoNow</strong>. Logo artwork is included in the header, footer, and admin login.
+Brand colors follow the logo palette: navy blue and vibrant green on a light UI.
+</div>
+
+<h2>3. Technologies Used</h2>
+
+<h3>3.1 Core stack</h3>
+<table>
+  <tr><th>Layer</th><th>Technology</th><th>Purpose</th></tr>
+  <tr><td>Runtime</td><td><strong>Node.js</strong> (v24+)</td><td>Server-side JavaScript runtime</td></tr>
+  <tr><td>Web framework</td><td><strong>Express.js</strong> (^4.21)</td><td>HTTP routing, middleware, static files</td></tr>
+  <tr><td>Templating</td><td><strong>EJS</strong> (^3.1)</td><td>Server-rendered HTML pages</td></tr>
+  <tr><td>Session</td><td><strong>express-session</strong> (^1.18)</td><td>Login sessions, cart, recently viewed, CSRF token, flash messages</td></tr>
+  <tr><td>Password hashing</td><td><strong>bcryptjs</strong> (^2.4)</td><td>Secure password storage for users/admins</td></tr>
+  <tr><td>File uploads</td><td><strong>multer</strong> (^2.3)</td><td>Admin product image uploads</td></tr>
+  <tr><td>IDs</td><td><strong>uuid</strong> (^11)</td><td>Unique IDs for products, orders, users, reviews</td></tr>
+  <tr><td>Data storage</td><td><strong>JSON file</strong> (<span class="path">data/store.json</span>)</td><td>Persistent store without requiring MySQL</td></tr>
+</table>
+
+<h3>3.2 Frontend technologies</h3>
+<table>
+  <tr><th>Technology</th><th>Purpose</th></tr>
+  <tr><td>HTML5</td><td>Page structure (via EJS templates)</td></tr>
+  <tr><td>CSS3</td><td>Responsive layout, brand theme, admin shell</td></tr>
+  <tr><td>Vanilla JavaScript</td><td>Mobile menu, admin menu, live search suggestions</td></tr>
+  <tr><td>Google Fonts — DM Sans</td><td>Clean modern typography</td></tr>
+  <tr><td>Unsplash image URLs</td><td>Seeded clothing product / category visuals</td></tr>
+</table>
+
+<h3>3.3 Tooling &amp; environment</h3>
+<table>
+  <tr><th>Tool</th><th>Purpose</th></tr>
+  <tr><td>npm</td><td>Dependency install and <span class="path">npm start</span></td></tr>
+  <tr><td>Windows / PowerShell</td><td>Local development environment</td></tr>
+  <tr><td>Node fetch smoke scripts</td><td>Automated checks for login, cart, checkout, admin</td></tr>
+</table>
+
+<h3>3.4 Why these technologies</h3>
+<ul>
+  <li>Runs without PHP, MySQL, Apache, or Docker on the current machine.</li>
+  <li>Fast to start for demos and college/project submissions.</li>
+  <li>Clear separation: routes (Express) → views (EJS) → data (JSON) → assets (CSS/JS).</li>
+  <li>Easy migration path later to PostgreSQL/MySQL and real payment gateways.</li>
+</ul>
+
+<h2>4. System Architecture</h2>
+<pre>
+Browser (Customer / Admin)
+        │
+        ▼
+ Express Server (server.js)  ← Port 3000
+   ├── Session middleware (cart, auth, CSRF, flash)
+   ├── Storefront routes (/shop, /cart, /checkout, …)
+   ├── Admin routes (/admin/…)
+   ├── EJS views (views/)
+   ├── Static assets (public/)
+   └── Data layer (lib/db.js → data/store.json)
+</pre>
+<p>
+Requests are rendered on the server (SSR). Cart and login state live in the session cookie.
+All catalog, order, and user changes are written back to <span class="path">data/store.json</span>.
+</p>
+
+<h2>5. Folder Structure</h2>
+<pre>
+wordpress-e-commerce/
+├── server.js                 # Main application entry
+├── package.json              # Dependencies &amp; scripts
+├── README.md                 # Quick start
+├── data/
+│   └── store.json            # Auto-created database file
+├── lib/
+│   ├── db.js                 # Load/save/seed data
+│   └── helpers.js            # Money format, cart totals, CSRF, pagination
+├── public/
+│   ├── css/style.css         # Store + admin styles
+│   ├── js/app.js             # Search suggest + menus
+│   └── images/logo.png       # Brand logo
+├── uploads/                  # Admin-uploaded product images
+├── views/
+│   ├── partials/             # Header, footer, product card
+│   ├── home, shop, product, cart, checkout, …
+│   └── admin/                # Dashboard, CRUD screens, login
+└── scripts/                  # Smoke test scripts
+</pre>
+
+<h2>6. Features — Customer Storefront</h2>
+<div class="two">
+  <div class="card">
+    <h3>Discovery</h3>
+    <ul>
+      <li>Home with deals, featured, men/women sections</li>
+      <li>Category browsing (Men, Women, Kids, Ethnic, Footwear, Accessories)</li>
+      <li>Full-text search + live suggestions</li>
+      <li>Filters: category, gender, price, sort</li>
+      <li>Pagination (8 products per page)</li>
+      <li>Recently viewed products</li>
+    </ul>
+  </div>
+  <div class="card">
+    <h3>Buying</h3>
+    <ul>
+      <li>Product page with size &amp; color</li>
+      <li>Delivery date estimate</li>
+      <li>Add to cart / Buy now</li>
+      <li>Update qty / remove items</li>
+      <li>Coupons: WELCOME10, FLAT200</li>
+      <li>Checkout with address + COD / demo UPI</li>
+    </ul>
+  </div>
+  <div class="card">
+    <h3>Account</h3>
+    <ul>
+      <li>Register / login / logout</li>
+      <li>Edit profile (name, phone, password)</li>
+      <li>Saved addresses</li>
+      <li>Wishlist</li>
+      <li>Product reviews &amp; ratings</li>
+      <li>Order history &amp; tracking page</li>
+      <li>Cancel order (Pending / Confirmed)</li>
+    </ul>
+  </div>
+  <div class="card">
+    <h3>UX extras</h3>
+    <ul>
+      <li>Responsive desktop &amp; mobile layout</li>
+      <li>Sticky header + mobile nav</li>
+      <li>Flash success/error messages</li>
+      <li>Free shipping threshold ₹499</li>
+      <li>INR currency formatting</li>
+    </ul>
+  </div>
+</div>
+
+<h2>7. Features — Admin Panel</h2>
+<p>Admin URL: <strong>http://localhost:3000/admin/login</strong></p>
+<table>
+  <tr><th>Module</th><th>Operations</th></tr>
+  <tr><td>Dashboard</td><td>Counts for products, orders, customers; revenue; recent orders</td></tr>
+  <tr><td>Products</td><td>Create, read, update, delete; image URL or file upload; featured flag; stock; sizes/colors</td></tr>
+  <tr><td>Categories</td><td>Create, update, delete</td></tr>
+  <tr><td>Orders</td><td>List/filter by status; open detail; update order status + payment status + notes/timeline</td></tr>
+  <tr><td>Customers</td><td>List customers; delete</td></tr>
+  <tr><td>Reviews</td><td>List; delete</td></tr>
+  <tr><td>Coupons</td><td>Create percent/flat coupons; toggle active</td></tr>
+</table>
+<p><strong>Order statuses supported:</strong> Pending → Confirmed → Packed → Shipped → Out for Delivery → Delivered · also Cancelled / Returned</p>
+
+<h2>8. User Roles &amp; Demo Credentials</h2>
+<table>
+  <tr><th>Role</th><th>Email</th><th>Password</th><th>Access</th></tr>
+  <tr><td>Admin</td><td>admin@kharidonow.com</td><td>admin123</td><td>Full admin panel + store</td></tr>
+  <tr><td>Customer</td><td>user@kharidonow.com</td><td>user123</td><td>Shop, account, orders, wishlist</td></tr>
+</table>
+<div class="warn">
+Change these passwords before any public/production deployment.
+</div>
+
+<h2>9. Routes / API Map</h2>
+<h3>9.1 Storefront</h3>
+<table>
+  <tr><th>Method</th><th>Path</th><th>Description</th></tr>
+  <tr><td>GET</td><td>/</td><td>Home page</td></tr>
+  <tr><td>GET</td><td>/shop</td><td>Catalog with filters &amp; pagination</td></tr>
+  <tr><td>GET</td><td>/api/search?q=</td><td>JSON live search suggestions</td></tr>
+  <tr><td>GET</td><td>/product/:slug</td><td>Product detail</td></tr>
+  <tr><td>GET/POST</td><td>/cart…</td><td>View / add / update / remove / coupon</td></tr>
+  <tr><td>GET/POST</td><td>/checkout</td><td>Place order</td></tr>
+  <tr><td>GET</td><td>/orders, /order/:orderNo</td><td>Order list &amp; detail</td></tr>
+  <tr><td>POST</td><td>/order/:orderNo/cancel</td><td>Customer cancel</td></tr>
+  <tr><td>GET</td><td>/track</td><td>Public order tracking</td></tr>
+  <tr><td>GET/POST</td><td>/wishlist…</td><td>Wishlist</td></tr>
+  <tr><td>POST</td><td>/review</td><td>Submit review</td></tr>
+  <tr><td>GET/POST</td><td>/login, /register, /account…</td><td>Auth &amp; profile</td></tr>
+</table>
+<h3>9.2 Admin</h3>
+<table>
+  <tr><th>Method</th><th>Path</th><th>Description</th></tr>
+  <tr><td>GET/POST</td><td>/admin/login</td><td>Admin authentication</td></tr>
+  <tr><td>GET</td><td>/admin</td><td>Dashboard</td></tr>
+  <tr><td>CRUD</td><td>/admin/products…</td><td>Product management</td></tr>
+  <tr><td>CRUD</td><td>/admin/categories…</td><td>Category management</td></tr>
+  <tr><td>R/U</td><td>/admin/orders…</td><td>Order status management</td></tr>
+  <tr><td>R/D</td><td>/admin/customers…</td><td>Customer management</td></tr>
+  <tr><td>R/D</td><td>/admin/reviews…</td><td>Review moderation</td></tr>
+  <tr><td>C/U</td><td>/admin/coupons…</td><td>Coupon management</td></tr>
+</table>
+
+<h2>10. Data Model</h2>
+<p>Stored in <span class="path">data/store.json</span> as collections:</p>
+<ul>
+  <li><strong>users</strong> — id, name, email, phone, password (hash), role</li>
+  <li><strong>addresses</strong> — linked to userId</li>
+  <li><strong>categories</strong> — id, name, slug, image</li>
+  <li><strong>products</strong> — sku, name, slug, brand, price, comparePrice, stock, sizes, colors, gender, categoryId, image, ratings, featured</li>
+  <li><strong>orders</strong> — orderNo, items, totals, address, payment, status, timeline</li>
+  <li><strong>reviews</strong> — productId, rating, comment, user</li>
+  <li><strong>coupons</strong> — code, type (percent/flat), value, minOrder, active</li>
+  <li><strong>wishlists</strong> — userId + productIds[]</li>
+</ul>
+<p>On first run, <span class="path">lib/db.js</span> seeds ~20 clothing products, categories, demo users, sample coupons, and one sample order.</p>
+
+<h2>11. Business Rules</h2>
+<ul>
+  <li><strong>Shipping:</strong> Free if (subtotal − discount) ≥ ₹499; otherwise ₹49.</li>
+  <li><strong>Coupons:</strong> Applied only if active and minimum order is met.</li>
+  <li><strong>Stock:</strong> Reduced on checkout; restored if customer cancels (Pending/Confirmed).</li>
+  <li><strong>Payments:</strong> COD = Pending; demo UPI = Paid.</li>
+  <li><strong>CSRF:</strong> All state-changing POST forms require a session CSRF token.</li>
+  <li><strong>Auth guards:</strong> Customer routes need login; admin routes need role = admin.</li>
+</ul>
+
+<h2>12. UI / UX Design Notes</h2>
+<ul>
+  <li>Light theme for easy shopping (not dark-mode heavy).</li>
+  <li>Primary navy <code>#1e40af</code> and accent green <code>#16a34a</code> from the logo.</li>
+  <li>Amazon/Flipkart-like patterns: top offer bar, sticky search header, category nav, filters sidebar, price summary, order timeline.</li>
+  <li>Mobile breakpoints collapse grids, show menu toggles, and stack product/admin layouts.</li>
+</ul>
+
+<h2>13. How to Run</h2>
+<pre>
+cd "path\to\wordpress-e-commerce"
+npm install
+npm start
+</pre>
+<p>Then open <strong>http://localhost:3000</strong> in a browser.</p>
+<p>Default port is <strong>3000</strong> (override with environment variable <code>PORT</code> if needed).</p>
+
+<h2>14. Testing Checklist</h2>
+<ol>
+  <li>Home loads with logo and categories.</li>
+  <li>Search “shirt” shows suggestions and shop results.</li>
+  <li>Open a product → choose size/color → Add to cart.</li>
+  <li>Apply coupon WELCOME10 or FLAT200.</li>
+  <li>Checkout with COD → order confirmation + tracking timeline.</li>
+  <li>Customer cancels a Pending order.</li>
+  <li>Admin login → edit product, change order status to Shipped/Delivered.</li>
+  <li>Resize browser to mobile width → nav and grids remain usable.</li>
+</ol>
+
+<h2>15. Going Live (Production Path)</h2>
+<p>This project can become a real working website. Recommended next steps:</p>
+<ol>
+  <li>Deploy Node host (Render, Railway, VPS, etc.) + custom domain + HTTPS.</li>
+  <li>Replace JSON storage with PostgreSQL or MySQL.</li>
+  <li>Integrate Razorpay / PayU / Stripe for real payments.</li>
+  <li>Add email/SMS order notifications.</li>
+  <li>Move secrets to environment variables; rotate admin password.</li>
+  <li>Add privacy policy, refund policy, and GST/invoice support as required.</li>
+</ol>
+<p>
+<strong>WordPress alternative:</strong> If a hosting plan with PHP + MySQL is available, the same business flows can be rebuilt using WordPress + WooCommerce. This Node project remains a complete functional reference/prototype.
+</p>
+
+<h2>16. Limitations &amp; Future Scope</h2>
+<table>
+  <tr><th>Current limitation</th><th>Future enhancement</th></tr>
+  <tr><td>JSON file database</td><td>SQL/NoSQL database + migrations</td></tr>
+  <tr><td>Demo payments</td><td>Live payment gateway webhooks</td></tr>
+  <tr><td>Single product image</td><td>Image gallery / zoom</td></tr>
+  <tr><td>No inventory warehouses</td><td>Multi-warehouse / pincode SLA</td></tr>
+  <tr><td>Basic search</td><td>Full-text / recommendation engine</td></tr>
+  <tr><td>Session cart only</td><td>Persistent cart for logged-in users across devices</td></tr>
+</table>
+
+<div class="footer-note">
+  End of document — KharidoNow Complete Functional Project Documentation (including Technologies Used).<br>
+  Generated for project submission / handover use.
+</div>
+
+</body>
+</html>

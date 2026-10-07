@@ -1,0 +1,84 @@
+<%- include('partials/header') %>
+<div class="container pdp">
+  <img src="<%= product.image %>" alt="<%= product.name %>">
+  <div>
+    <p class="brand-name"><%= product.brand %></p>
+    <h1 style="margin:4px 0 8px"><%= product.name %></h1>
+    <div class="stars">★ <%= (product.ratingAvg || 0).toFixed(1) %> · <%= product.ratingCount || 0 %> reviews</div>
+    <div class="price" style="margin:14px 0">
+      <b style="font-size:28px"><%= inr(product.price) %></b>
+      <% if (product.comparePrice > product.price) { %>
+        <s><%= inr(product.comparePrice) %></s>
+        <span class="off"><%= Math.round((1 - product.price / product.comparePrice) * 100) %>% off</span>
+      <% } %>
+    </div>
+    <p><%= product.description %></p>
+    <div class="delivery-box">
+      <b>Delivery by <%= delivery.label %></b>
+      <p class="muted" style="margin:4px 0 0">Free shipping on orders above ₹499 · 7-day easy returns</p>
+    </div>
+    <p class="muted">In stock: <%= product.stock %> · SKU <%= product.sku %></p>
+    <form method="post" action="/cart/add">
+      <input type="hidden" name="_csrf" value="<%= csrf %>">
+      <input type="hidden" name="productId" value="<%= product.id %>">
+      <input type="hidden" name="next" value="/cart">
+      <label>Size</label>
+      <div class="swatches">
+        <% product.sizes.forEach((s, i) => { %>
+          <label><input type="radio" name="size" value="<%= s %>" <%= i === 0 ? 'checked' : '' %>><span><%= s %></span></label>
+        <% }) %>
+      </div>
+      <label>Color</label>
+      <div class="swatches">
+        <% product.colors.forEach((c, i) => { %>
+          <label><input type="radio" name="color" value="<%= c %>" <%= i === 0 ? 'checked' : '' %>><span><%= c %></span></label>
+        <% }) %>
+      </div>
+      <label>Qty</label>
+      <input class="qty" type="number" name="qty" min="1" max="<%= product.stock %>" value="1">
+      <div style="display:flex;gap:10px;margin-top:16px;flex-wrap:wrap">
+        <button class="btn" type="submit" <%= product.stock < 1 ? 'disabled' : '' %>>Add to cart</button>
+        <button class="btn green" type="submit" formaction="/cart/add" name="buy" value="1" onclick="this.form.next.value='/checkout'">Buy now</button>
+      </div>
+    </form>
+    <% if (user) { %>
+      <form method="post" action="/wishlist/toggle" style="margin-top:10px">
+        <input type="hidden" name="_csrf" value="<%= csrf %>">
+        <input type="hidden" name="productId" value="<%= product.id %>">
+        <input type="hidden" name="next" value="/product/<%= product.slug %>">
+        <button class="btn ghost" type="submit"><%= wished ? 'Remove from wishlist' : 'Save to wishlist' %></button>
+      </form>
+    <% } %>
+  </div>
+</div>
+<div class="container two-col">
+  <div class="panel pad">
+    <h3>Reviews</h3>
+    <% if (!reviews.length) { %><p class="muted">No reviews yet.</p><% } %>
+    <% reviews.forEach(r => { %>
+      <div style="border-bottom:1px solid var(--line);padding:10px 0">
+        <b><%= r.userName %></b> · <span class="stars"><%= '★'.repeat(r.rating) %></span>
+        <p><%= r.comment %></p>
+      </div>
+    <% }) %>
+    <% if (user) { %>
+      <form method="post" action="/review" style="margin-top:16px">
+        <input type="hidden" name="_csrf" value="<%= csrf %>">
+        <input type="hidden" name="productId" value="<%= product.id %>">
+        <label>Your rating</label>
+        <select class="field" name="rating">
+          <option value="5">5</option><option value="4">4</option><option value="3">3</option><option value="2">2</option><option value="1">1</option>
+        </select>
+        <textarea class="field" name="comment" placeholder="How was the fit and fabric?" style="margin-top:10px;min-height:90px"></textarea>
+        <button class="btn small" style="margin-top:10px" type="submit">Post review</button>
+      </form>
+    <% } %>
+  </div>
+  <div>
+    <h3>You may also like</h3>
+    <div class="product-grid" style="grid-template-columns:1fr 1fr">
+      <% related.forEach(p => { %><%- include('partials/product-card', { p }) %><% }) %>
+    </div>
+  </div>
+</div>
+<%- include('partials/footer') %>

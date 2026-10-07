@@ -1,0 +1,29 @@
+  </main>
+  <footer class="footer">
+    <div class="container footer-grid">
+      <div>
+        <img src="/public/images/logo.png" alt="KharidoNow" style="width:72px;border-radius:12px;background:#000;margin-bottom:10px">
+        <h4>KharidoNow</h4>
+        <p>Simple clothing shopping — find it, try the fit, get it delivered.</p>
+      </div>
+      <div>
+        <h4>Shop</h4>
+        <% categories.forEach(c => { %><a href="/shop?category=<%= c.id %>"><%= c.name %></a><% }) %>
+      </div>
+      <div>
+        <h4>Help</h4>
+        <a href="/track">Track order</a>
+        <a href="/account">Your account</a>
+        <a href="/cart">Cart</a>
+      </div>
+      <div>
+        <h4>For store staff</h4>
+        <a href="/admin/login">Admin login</a>
+        <p class="muted">Manage products, orders, and customers.</p>
+      </div>
+    </div>
+    <div class="container" style="margin-top:24px;font-size:13px">© <%= new Date().getFullYear() %> KharidoNow. All rights reserved.</div>
+  </footer>
+  <script src="/public/js/app.js"></script>
+</body>
+</html>

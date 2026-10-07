@@ -1,0 +1,23 @@
+<%- include('_head') %>
+<h1>Customers</h1>
+<div class="panel pad">
+  <table class="table">
+    <thead><tr><th>Name</th><th>Email</th><th>Phone</th><th></th></tr></thead>
+    <tbody>
+      <% customers.forEach(c => { %>
+        <tr>
+          <td><%= c.name %></td>
+          <td><%= c.email %></td>
+          <td><%= c.phone %></td>
+          <td>
+            <form method="post" action="/admin/customers/<%= c.id %>/delete" onsubmit="return confirm('Remove this customer?')">
+              <input type="hidden" name="_csrf" value="<%= csrf %>">
+              <button class="btn danger small" type="submit">Delete</button>
+            </form>
+          </td>
+        </tr>
+      <% }) %>
+    </tbody>
+  </table>
+</div>
+<%- include('_foot') %>

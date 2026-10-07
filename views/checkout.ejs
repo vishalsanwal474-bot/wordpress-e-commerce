@@ -1,0 +1,31 @@
+<%- include('partials/header') %>
+<div class="container two-col">
+  <form class="panel pad" method="post" action="/checkout">
+    <input type="hidden" name="_csrf" value="<%= csrf %>">
+    <h2>Delivery details</h2>
+    <div class="form-grid">
+      <div><label>Full name</label><input class="field" name="name" required value="<%= user ? user.name : (addresses[0] && addresses[0].name) || '' %>"></div>
+      <div><label>Phone</label><input class="field" name="phone" required value="<%= (addresses[0] && addresses[0].phone) || '' %>"></div>
+      <% if (!user) { %>
+        <div class="full"><label>Email</label><input class="field" type="email" name="email" required></div>
+      <% } %>
+      <div class="full"><label>Address</label><input class="field" name="line1" required value="<%= (addresses[0] && addresses[0].line1) || '' %>"></div>
+      <div><label>City</label><input class="field" name="city" required value="<%= (addresses[0] && addresses[0].city) || '' %>"></div>
+      <div><label>State</label><input class="field" name="state" required value="<%= (addresses[0] && addresses[0].state) || '' %>"></div>
+      <div><label>PIN code</label><input class="field" name="pincode" required value="<%= (addresses[0] && addresses[0].pincode) || '' %>"></div>
+    </div>
+    <h3 style="margin-top:20px">Payment</h3>
+    <label><input type="radio" name="paymentMethod" value="COD" checked> Cash on delivery</label><br>
+    <label><input type="radio" name="paymentMethod" value="UPI"> UPI (demo — marked paid)</label>
+    <button class="btn" style="margin-top:18px" type="submit">Confirm order · <%= inr(totals.total) %></button>
+  </form>
+  <aside class="panel pad">
+    <h3>Your items</h3>
+    <% totals.lines.forEach(line => { %>
+      <p><%= line.product.name %> × <%= line.qty %> <span style="float:right"><%= inr(line.lineTotal) %></span></p>
+    <% }) %>
+    <hr>
+    <p>Total <b style="float:right"><%= inr(totals.total) %></b></p>
+  </aside>
+</div>
+<%- include('partials/footer') %>

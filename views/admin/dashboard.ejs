@@ -1,0 +1,25 @@
+<%- include('_head') %>
+<h1>Dashboard</h1>
+<div class="stats">
+  <div class="panel stat"><span class="muted">Products</span><b><%= stats.products %></b></div>
+  <div class="panel stat"><span class="muted">Orders</span><b><%= stats.orders %></b></div>
+  <div class="panel stat"><span class="muted">Customers</span><b><%= stats.customers %></b></div>
+  <div class="panel stat"><span class="muted">Revenue</span><b><%= inr(stats.revenue) %></b></div>
+</div>
+<div class="panel pad" style="margin-top:20px">
+  <h3>Recent orders</h3>
+  <table class="table">
+    <thead><tr><th>Order</th><th>Status</th><th>Total</th><th></th></tr></thead>
+    <tbody>
+      <% recent.forEach(o => { %>
+        <tr>
+          <td><%= o.orderNo %></td>
+          <td><%= o.status %></td>
+          <td><%= inr(o.total) %></td>
+          <td><a href="/admin/orders/<%= o.id %>">Manage</a></td>
+        </tr>
+      <% }) %>
+    </tbody>
+  </table>
+</div>
+<%- include('_foot') %>

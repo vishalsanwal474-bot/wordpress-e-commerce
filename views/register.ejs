@@ -1,0 +1,18 @@
+<%- include('partials/header') %>
+<div class="container" style="max-width:520px;margin:40px auto">
+  <div class="panel pad">
+    <h2>Create account</h2>
+    <% if (error) { %><div class="error"><%= error %></div><% } %>
+    <form method="post">
+      <input type="hidden" name="_csrf" value="<%= csrf %>">
+      <div class="form-grid">
+        <div class="full"><label>Name</label><input class="field" name="name" required></div>
+        <div><label>Email</label><input class="field" type="email" name="email" required></div>
+        <div><label>Phone</label><input class="field" name="phone" required></div>
+        <div class="full"><label>Password</label><input class="field" type="password" name="password" required minlength="6"></div>
+      </div>
+      <button class="btn" type="submit" style="width:100%;margin-top:16px">Register</button>
+    </form>
+  </div>
+</div>
+<%- include('partials/footer') %>
